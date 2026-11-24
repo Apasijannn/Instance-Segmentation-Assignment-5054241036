@@ -1,0 +1,13 @@
+run,gpu,start,minutes
+yolo11s_seg,Tesla T4,2026-11-17T15:12:12,27.9
+yolov8s_seg,Tesla T4,2026-11-17T15:40:05,29.7
+mask_rcnn_r50,Tesla T4,2026-11-17T16:09:50,61.2
+aug_none,Tesla T4,2026-11-17T17:11:05,12.5
+aug_default,Tesla T4,2026-11-17T17:23:35,28.5
+aug_custom,Tesla T4,2026-11-17T17:52:06,30.2
+yolo11s_aug_none,Tesla T4,2026-11-24T08:58:30,20.3
+yolo11s_aug_custom,Tesla T4,2026-11-24T09:18:46,34.8
+yolov8s_aug_none,Tesla T4,2026-11-24T09:53:32,18.2
+yolov8s_aug_custom,Tesla T4,2026-11-24T10:11:41,53.5
+mask_rcnn_aug_none,Tesla T4,2026-11-24T11:05:14,60.0
+mask_rcnn_aug_custom,Tesla T4,2026-11-24T12:05:17,60.2
