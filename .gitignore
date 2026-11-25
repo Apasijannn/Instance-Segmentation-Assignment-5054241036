@@ -1,0 +1,22 @@
+# Foto asli HP (berisi EXIF/lokasi) dan data mentah
+Dataset/
+prelabel/images/
+
+# Bobot model (besar); unduh dari output notebook Kaggle
+*.pt
+*.pth
+best/
+**/weights/
+
+# Materi kuliah dan rahasia
+*.pdf
+!docs/*.pdf
+kaggle.json
+.env
+
+# Sisa Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+
+# Catatan pribadi untuk demo
+demo/skrip_demo.md
