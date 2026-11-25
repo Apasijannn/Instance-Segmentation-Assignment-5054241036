@@ -43,24 +43,12 @@ Repo ini membandingkan tiga model instance segmentation yang dilatih pada [Panop
 
 Kondisi tanpa augmentasi memberi skor tertinggi untuk ketiga model. Pembahasan lengkap ada di [laporan](docs/laporan_instance_segmentation_5054241036.pdf), dan prosesnya tercatat di [logbook](docs/logbook.md).
 
-## Menjalankan ulang
+## Ringkasan project
 
-**Training dan testing (Kaggle)**
-
-1. Settings: Accelerator GPU T4, Internet On; Add-ons → Secrets: `ROBOFLOW_API_KEY`.
-2. `notebooks/training.ipynb` → Save & Run All. Output versi sebelumnya bisa dijadikan input agar model yang sudah selesai tidak dilatih ulang.
-3. `notebooks/testing.ipynb` → tambahkan output training sebagai input, lalu Save & Run All.
-
-**Demo (lokal, CPU)**
-
-1. Unduh bobot dari output notebook training di Kaggle ke `demo/weights/`: `yolo11s_seg.pt`, `yolov8s_seg.pt`, dan `mask_rcnn_r50.pt`. Ketiganya berasal dari `CV_InstanceSeg/runs/<model>/`.
-2. `pip install ultralytics torch torchvision pandas matplotlib`
-3. Buka `demo/demo_inferensi.ipynb`, lalu Run All.
-
-Bobot model (`*.pt`) dan foto asli HP (berisi EXIF/lokasi) sengaja tidak disimpan di repo.
-
-## Catatan
-
-- Draf anotasi foto HP dibuat dari prediksi model, lalu dikoreksi manual, sehingga skor HP bisa terlalu optimistis.
-- Delapan kelas test set asli tidak ada di data latih; setiap kondisi dilatih dengan satu seed.
-- Penggunaan AI dideklarasikan di logbook dan laporan.
+1. **Data latih:** Panoptic Indoor Segmentation v5, 397 gambar latih, 166 validasi, dan 359 test. Kelas yang salah ketik digabung sehingga 74 kelas menjadi 72.
+2. **Test set sendiri:** 44 foto ruangan dari Samsung Galaxy S24 Ultra (679 objek, 50 kelas), dianotasi polygon di Roboflow. Foto mencakup kondisi sulit: cahaya redup, backlight, sudut ekstrem, dan objek bertumpuk.
+3. **Training:** ketiga model dilatih di Kaggle (Tesla T4) dengan input 640 px dan batas 1 jam GPU per kondisi, masing-masing untuk tiga kondisi augmentasi.
+4. **Domain shift:** ketiga model mencapai mask mAP50-95 sekitar 0,10 di test set asli dan lebih tinggi di foto HP (0,108–0,148). Kenaikan ini dipengaruhi kelas test asli yang tidak ada di data latih serta komposisi kelas foto HP, bukan bukti model lebih baik di HP.
+5. **Augmentasi:** kondisi tanpa augmentasi justru terbaik untuk ketiga model, sedangkan augmentasi rancangan sendiri tidak unggul berarti dibanding default.
+6. **Analisis kegagalan:** pada lima foto tersulit, kegagalan utama berasal dari kelas langka (misalnya `toilet`, 2 objek latih) yang tertukar dengan kelas lain, serta cahaya redup, backlight, dan sudut ekstrem. Menaikkan input ke 960 px dengan retina mask hanya menambah 0,004 mAP50-95, jadi resolusi mask bukan penyebab utama.
+7. **Kesimpulan:** perbaikan yang paling menjanjikan adalah menambah contoh latih untuk kelas langka dan kondisi sulit, bukan menaikkan resolusi atau memperkuat augmentasi.
